@@ -23,11 +23,12 @@ class PostFactory extends Factory
     public function definition()
     {
         $title = $this->faker->sentence();
-        return [
-            'title' => $title,
-            'slug' => Str::slug($title),
-            'description' => $this->faker->paragraph(),
-            'user_id' => $this->faker->numberBetween(1, 3)
+         return [
+            'title'         => fake()->sentence,
+            //'slug'          => Str::slug($title),
+            'description'   => fake()->paragraphs(3, true),
+            'created_at'  => fake()->dateTimeBetween('-1 year', 'now'),
+            'user_id'       => random_int(1, 30)
         ];
     }
 }

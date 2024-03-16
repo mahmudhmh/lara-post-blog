@@ -33,6 +33,8 @@ Route::group(['middleware' =>['auth']], function(){
     Route::delete('/posts/{post}', [PostController::class, 'delete'])->name('posts.delete');
 
     Route::post('/posts/{post}/comment', [CommentController::class,"store"])->name("comments.store");
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
 
 });
 
@@ -40,7 +42,6 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
 
 Auth::routes();

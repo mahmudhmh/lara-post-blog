@@ -20,8 +20,15 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->posts->count() }}</td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    @endforeach
+
+                </tbody>
+            </table>
+            <div class="row col-12 text-center d-flex flex-row justify-content-center my-4">
+                <div class="row w-auto">
+                    {{ $users->Links('pagination::bootstrap-4')}}</div>
+            </div>
     </div>
 @endsection
+<script src=" https://code.jquery.com/jquery-3.6.0.min.js">
+</script>

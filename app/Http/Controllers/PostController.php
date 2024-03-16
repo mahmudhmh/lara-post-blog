@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Auth\Access\AuthorizationException;
 use Laravel\Socialite\Facades\Socialite;
 use TijsVerkoyen\CssToInlineStyles\Css\Rule\Rule;
@@ -19,10 +20,12 @@ use TijsVerkoyen\CssToInlineStyles\Css\Rule\Rule;
 class PostController extends Controller
 {
     public function index()
-    {
-        $allPosts = Post::withTrashed()->paginate(5);
-        return view('post.index', ['posts' => $allPosts]);
-    }
+{
+    $allPosts = Post::withTrashed()->paginate(5);
+    return view('post.index', ['posts' => $allPosts,]);
+
+}
+
 
     public function show($post)
     {
@@ -99,16 +102,31 @@ class PostController extends Controller
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
 
+public function delete($postId)
+{
+    $post = Post::findOrFail($postId);
 
-    public function delete($post)
-    {
-        $post = Post::findOrFail($post);
-        if ($post->image && Storage::exists($post->image)) {
-            Storage::delete($post->image);
-        }
-        $post->delete();
-        return redirect()->back()->with('success', 'A Post is Deleted Successfully!');;
+    if ($post->user_id !== Auth::id()) {
+        throw new AuthorizationException('You are not authorized to delete this post.');
     }
+
+    if ($post->image_path && Storage::exists($post->image_path)) {
+        Storage::delete($post->image_path);
+    }
+    $post->delete();
+
+    return redirect()->back()->with('success', 'A Post is Deleted Successfully!');
+}
+    // public function delete($post)
+    // {
+
+    //     $post = Post::findOrFail($post);
+    //     if ($post->image && Storage::exists($post->image)) {
+    //         Storage::delete($post->image);
+    //     }
+    //     $post->delete();
+    //     return redirect()->back()->with('success', 'A Post is Deleted Successfully!');;
+    // }
 
     public function restore($post)
     {
