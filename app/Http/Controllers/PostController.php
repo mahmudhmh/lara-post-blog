@@ -21,7 +21,7 @@ class PostController extends Controller
 {
     public function index()
 {
-    $allPosts = Post::withTrashed()->paginate(5);
+    $allPosts = Post::withTrashed()->paginate(7);
     return view('post.index', ['posts' => $allPosts,]);
 
 }
